@@ -1,4 +1,5 @@
 from itertools import combinations
+from Graph import *
 
 def is_connected_after_removal(graph, removed_nodes):
     
