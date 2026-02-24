@@ -3,6 +3,7 @@ import networkx as nx
 from Graph import *
 from cutset import is_connected_after_removal
 from itertools import combinations
+import os
 
 class GraphVisualizer:
     def __init__(self, graph):
@@ -242,7 +243,6 @@ class GraphVisualizer:
 
 def find_and_visualize_cutset(graph, k, output_dir="visualizations"):
     """Find a k-cutset and visualize it"""
-    import os
     
     # Create output directory if it doesn't exist
     if not os.path.exists(output_dir):
@@ -267,7 +267,7 @@ def find_and_visualize_cutset(graph, k, output_dir="visualizations"):
         removed = set(combo)
         
         if not is_connected_after_removal(graph, removed):
-            print(f"\n✓ Cutset found: {combo}")
+            print(f"\n Cutset found: {combo}")
             print("  Removing these nodes disconnects the graph!")
             
             # Show comparison
@@ -279,7 +279,7 @@ def find_and_visualize_cutset(graph, k, output_dir="visualizations"):
             break
     
     if not found:
-        print(f"\n✗ No {k}-cutset exists in this graph.")
+        print(f"\n No {k}-cutset exists in this graph.")
         print(f"  The graph cannot be disconnected by removing {k} nodes.")
     
     return found
@@ -290,6 +290,19 @@ if __name__ == "__main__":
     print("\n" + "="*60)
     print("GRAPH CUTSET VISUALIZER")
     print("="*60)
+
+    graph = Graph()
+    graph.add_node('A')
+    graph.add_node('B')
+    graph.add_node('C')
+    graph.add_node('D')
+    graph.add_node('E')
+    graph.add_node('F')
+    graph.connect_node('A', 'B')
+    graph.connect_node('A', 'C')
+    graph.connect_node('A', 'D')
+    graph.connect_node('D', 'E')
+    graph.connect_node('D', 'F')
     
     # Test with the graph from Graph.py
     print("\nTesting with default graph from Graph.py")

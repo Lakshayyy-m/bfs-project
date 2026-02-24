@@ -17,11 +17,15 @@ class Graph:
 
 # we use index to avoid list.pop(0) which is O(n)
 # we can remove elements once the queue is large to reduce memory
-def bfs(graph, start):
+def bfs(graph, start, excluded_nodes=None):
+    if excluded_nodes is None:
+        excluded_nodes = set()
+
     visited = set([start])
     index = 0
     queue = [start]
     traversal_order = []
+    THRESHOLD = 25
 
     while index < len(queue):
         current_node = queue[index]
@@ -29,22 +33,13 @@ def bfs(graph, start):
         traversal_order.append(current_node)
 
         for neighbour in graph.adj[current_node]:
-            if neighbour not in visited:
+            if neighbour not in visited and neighbour not in excluded_nodes:
                 visited.add(neighbour)
                 queue.append(neighbour)
+
+        #trim the queue in order to reduce memory
+        if index >= THRESHOLD:
+            queue = queue[index:]
+            index = 0
+
     return traversal_order
-
-
-graph = Graph()
-graph.add_node('A')
-graph.add_node('B')
-graph.add_node('C')
-graph.add_node('D')
-graph.add_node('E')
-graph.add_node('F')
-graph.connect_node('A', 'B')
-graph.connect_node('A', 'C')
-graph.connect_node('A', 'D')
-graph.connect_node('D', 'E')
-graph.connect_node('D', 'F')
-print('Traversal Order:', bfs(graph, 'A'))
